@@ -1,0 +1,92 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="name"
+      required
+      formControlName="name"
+      name="name"
+    />
+    <div
+      *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+      class="alert alert-danger"
+    >
+      <div *ngIf="name?.errors?.['required']">Name is required.</div>
+      <div *ngIf="name?.errors?.['pattern']">
+        Name must be at least 2 words.
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="gender">Gender</label>
+    <br />
+    <div
+      class="btn-group"
+      role="group"
+      ngbRadioGroup
+      name="radioGender"
+      id="gender"
+      formControlName="gender"
+    >
+      <label
+        ngbButtonLabel
+        class="btn-primary"
+        *ngFor="let gender of genderList"
+      >
+        <input
+          ngbButton
+          type="radio"
+          class="btn-check"
+          [value]="gender.value"
+        />
+        {{ gender.label }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input
+      type="text"
+      class="form-control"
+      id="email"
+      required
+      formControlName="email"
+      name="name"
+    />
+    <div
+      *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+      class="alert alert-danger"
+    >
+      <div *ngIf="email?.errors?.['required']">Email is required.</div>
+      <div *ngIf="email?.errors?.['email']">Supply a valid email.</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="status">Status</label>
+    <br />
+    <div
+      class="btn-group"
+      role="group"
+      ngbRadioGroup
+      name="radioGender"
+      formControlName="status"
+    >
+      <label
+        ngbButtonLabel
+        class="btn-primary"
+        *ngFor="let status of statusList"
+      >
+        <input
+          ngbButton
+          type="radio"
+          class="btn-check"
+          [value]="status.value"
+        />
+        {{ status.label }}
+      </label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary my-2">Submit</button>
+</form>
