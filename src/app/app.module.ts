@@ -6,9 +6,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserRegistrationComponent } from './components/user/user-registration/user-registration.component';
+import { UserViewComponent } from './components/user/user-view/user-view.component';
 
 @NgModule({
-  declarations: [AppComponent, UserRegistrationComponent],
+  declarations: [AppComponent, UserRegistrationComponent, UserViewComponent],
   imports: [
     BrowserModule,
     FormsModule,

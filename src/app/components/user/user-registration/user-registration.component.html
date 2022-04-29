@@ -1,92 +1,117 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input
-      type="text"
-      class="form-control"
-      id="name"
-      required
-      formControlName="name"
-      name="name"
-    />
-    <div
-      *ngIf="name?.invalid && (name?.dirty || name?.touched)"
-      class="alert alert-danger"
-    >
-      <div *ngIf="name?.errors?.['required']">Name is required.</div>
-      <div *ngIf="name?.errors?.['pattern']">
-        Name must be at least 2 words.
+<div class="modal-header">
+  <h4 class="modal-title">
+    User {{ user !== null ? "Modification" : "Registration" }}
+  </h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        required
+        formControlName="name"
+        name="name"
+      />
+      <div
+        *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+        class="alert alert-danger"
+      >
+        <div *ngIf="name?.errors?.['required']">Name is required.</div>
+        <div *ngIf="name?.errors?.['pattern']">
+          Name must be at least 2 words.
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="gender">Gender</label>
-    <br />
-    <div
-      class="btn-group"
-      role="group"
-      ngbRadioGroup
-      name="radioGender"
-      id="gender"
-      formControlName="gender"
-    >
-      <label
-        ngbButtonLabel
-        class="btn-primary"
-        *ngFor="let gender of genderList"
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <br />
+      <div
+        class="btn-group"
+        role="group"
+        ngbRadioGroup
+        name="radioGender"
+        id="gender"
+        formControlName="gender"
       >
-        <input
-          ngbButton
-          type="radio"
-          class="btn-check"
-          [value]="gender.value"
-        />
-        {{ gender.label }}
-      </label>
+        <label
+          ngbButtonLabel
+          class="btn-primary"
+          *ngFor="let gender of genderList"
+        >
+          <input
+            ngbButton
+            type="radio"
+            class="btn-check"
+            [value]="gender.value"
+          />
+          {{ gender.label }}
+        </label>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input
-      type="text"
-      class="form-control"
-      id="email"
-      required
-      formControlName="email"
-      name="name"
-    />
-    <div
-      *ngIf="email?.invalid && (email?.dirty || email?.touched)"
-      class="alert alert-danger"
-    >
-      <div *ngIf="email?.errors?.['required']">Email is required.</div>
-      <div *ngIf="email?.errors?.['email']">Supply a valid email.</div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="status">Status</label>
-    <br />
-    <div
-      class="btn-group"
-      role="group"
-      ngbRadioGroup
-      name="radioGender"
-      formControlName="status"
-    >
-      <label
-        ngbButtonLabel
-        class="btn-primary"
-        *ngFor="let status of statusList"
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        required
+        formControlName="email"
+        name="name"
+      />
+      <div
+        *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+        class="alert alert-danger"
       >
-        <input
-          ngbButton
-          type="radio"
-          class="btn-check"
-          [value]="status.value"
-        />
-        {{ status.label }}
-      </label>
+        <div *ngIf="email?.errors?.['required']">Email is required.</div>
+        <div *ngIf="email?.errors?.['email']">Supply a valid email.</div>
+      </div>
     </div>
-  </div>
-  <button type="submit" class="btn btn-primary my-2">Submit</button>
-</form>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <br />
+      <div
+        class="btn-group"
+        role="group"
+        ngbRadioGroup
+        name="radioGender"
+        formControlName="status"
+      >
+        <label
+          ngbButtonLabel
+          class="btn-primary"
+          *ngFor="let status of statusList"
+        >
+          <input
+            ngbButton
+            type="radio"
+            class="btn-check"
+            [value]="status.value"
+          />
+          {{ status.label }}
+        </label>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+    Submit
+  </button>
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close('Close click')"
+  >
+    Close
+  </button>
+</div>
+<h1></h1>

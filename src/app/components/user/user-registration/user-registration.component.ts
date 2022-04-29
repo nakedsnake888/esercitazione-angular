@@ -4,6 +4,7 @@ import { User } from 'src/app/classes/user/user';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ENDPOINTS } from 'src/app/constants';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-user-registration',
@@ -20,8 +21,9 @@ export class UserRegistrationComponent implements OnInit {
     { label: 'Inactive', value: 'inactive' },
   ];
 
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient, public activeModal: NgbActiveModal) {}
 
+  user!: User;
   userForm!: FormGroup;
 
   ngOnInit(): void {
@@ -34,6 +36,14 @@ export class UserRegistrationComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       status: new FormControl(this.statusList[0].value),
     });
+    if (this.user) {
+      this.userForm.setValue({
+        name: this.user.name,
+        gender: this.user.gender,
+        email: this.user.email,
+        status: this.user.status,
+      });
+    }
   }
 
   get name() {
@@ -44,17 +54,48 @@ export class UserRegistrationComponent implements OnInit {
     return this.userForm.get('email');
   }
 
-  onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.userForm.value);
+  //Get di un elemento (via GET)
+  getUser(userId: number) {
     this.http
-      .post(
-        environment.baseUrl + ENDPOINTS.USER_ENDPOINT,
-        this.userForm.value,
+      .get<User>(
+        environment.baseUrl + ENDPOINTS.USER_ENDPOINT + '/' + this.user.id,
         {
           headers: { Authorization: 'Bearer ' + environment.token },
         }
       )
-      .subscribe();
+      .subscribe((user) =>
+        this.userForm.setValue({
+          name: user.name,
+          gender: user.gender,
+          email: user.email,
+          status: user.status,
+        })
+      );
+  }
+
+  //Submit Update or Registration
+  onSubmit() {
+    if (this.user) {
+      console.log('qui');
+      this.http
+        .put(
+          environment.baseUrl + ENDPOINTS.USER_ENDPOINT + '/' + this.user.id,
+          this.userForm.value,
+          {
+            headers: { Authorization: 'Bearer ' + environment.token },
+          }
+        )
+        .subscribe(() => this.activeModal.close());
+    } else {
+      this.http
+        .post(
+          environment.baseUrl + ENDPOINTS.USER_ENDPOINT,
+          this.userForm.value,
+          {
+            headers: { Authorization: 'Bearer ' + environment.token },
+          }
+        )
+        .subscribe(() => this.activeModal.close());
+    }
   }
 }
