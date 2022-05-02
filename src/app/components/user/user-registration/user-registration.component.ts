@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ENDPOINTS } from 'src/app/constants';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-registration',
@@ -21,11 +22,12 @@ export class UserRegistrationComponent implements OnInit {
     { label: 'Inactive', value: 'inactive' },
   ];
 
-  constructor(public http: HttpClient, public activeModal: NgbActiveModal) {}
+  constructor(public http: HttpClient, private router: Router) {}
 
   user!: User;
   userForm!: FormGroup;
 
+  //Creates a new User Form.
   ngOnInit(): void {
     this.userForm = new FormGroup({
       name: new FormControl('', [
@@ -36,14 +38,6 @@ export class UserRegistrationComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       status: new FormControl(this.statusList[0].value),
     });
-    if (this.user) {
-      this.userForm.setValue({
-        name: this.user.name,
-        gender: this.user.gender,
-        email: this.user.email,
-        status: this.user.status,
-      });
-    }
   }
 
   get name() {
@@ -54,48 +48,16 @@ export class UserRegistrationComponent implements OnInit {
     return this.userForm.get('email');
   }
 
-  //Get di un elemento (via GET)
-  getUser(userId: number) {
+  //Submit user registration.
+  onSubmit() {
     this.http
-      .get<User>(
-        environment.baseUrl + ENDPOINTS.USER_ENDPOINT + '/' + this.user.id,
+      .post(
+        environment.baseUrl + ENDPOINTS.USER_ENDPOINT,
+        this.userForm.value,
         {
           headers: { Authorization: 'Bearer ' + environment.token },
         }
       )
-      .subscribe((user) =>
-        this.userForm.setValue({
-          name: user.name,
-          gender: user.gender,
-          email: user.email,
-          status: user.status,
-        })
-      );
-  }
-
-  //Submit Update or Registration
-  onSubmit() {
-    if (this.user) {
-      console.log('qui');
-      this.http
-        .put(
-          environment.baseUrl + ENDPOINTS.USER_ENDPOINT + '/' + this.user.id,
-          this.userForm.value,
-          {
-            headers: { Authorization: 'Bearer ' + environment.token },
-          }
-        )
-        .subscribe(() => this.activeModal.close());
-    } else {
-      this.http
-        .post(
-          environment.baseUrl + ENDPOINTS.USER_ENDPOINT,
-          this.userForm.value,
-          {
-            headers: { Authorization: 'Bearer ' + environment.token },
-          }
-        )
-        .subscribe(() => this.activeModal.close());
-    }
+      .subscribe(() => this.router.navigate(['/', 'people']));
   }
 }

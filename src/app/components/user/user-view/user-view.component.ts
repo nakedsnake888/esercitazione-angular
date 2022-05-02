@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 import { User } from 'src/app/classes/user/user';
 import { ENDPOINTS } from 'src/app/constants';
 import { environment } from 'src/environments/environment';
-import { UserRegistrationComponent } from '../user-registration/user-registration.component';
 
 @Component({
   selector: 'app-user-view',
@@ -12,46 +11,41 @@ import { UserRegistrationComponent } from '../user-registration/user-registratio
   styleUrls: ['./user-view.component.css'],
 })
 export class UserViewComponent implements OnInit {
-  constructor(public http: HttpClient, private modalService: NgbModal) {}
+  constructor(public http: HttpClient, private router: Router) {}
 
-  //Variables declaration for table content
+  //Variables declaration for table content.
   users: User[] = [];
-  usersPaged: User[] = [];
 
-  //Variables declaration for table management
+  //Variables declaration for table management.
   collectionSize = 0;
   page = 1;
-  pageSize = 10;
+  pageSize = 20;
 
   ngOnInit(): void {
-    this.getUsers().subscribe((users: User[]) => {
-      this.users = users;
-      this.collectionSize = users.length;
-      this.refreshUserList();
-    });
+    this.getUsers(this.page);
   }
 
-  //This action is the basic GET to get all Users
-  getUsers() {
-    return this.http.get<User[]>(
-      environment.baseUrl + ENDPOINTS.USER_ENDPOINT,
-      {
-        headers: { Authorization: 'Bearer' + environment.token },
-      }
-    );
+  //This action is the basic GET to get all Users.
+  getUsers(pageNumber: number) {
+    this.http
+      .get<any>(environment.baseUrl + ENDPOINTS.USER_ENDPOINT, {
+        headers: { Authorization: 'Bearer ' + environment.token },
+        params: { page: pageNumber },
+        observe: 'response',
+      })
+      .subscribe((res: any) => {
+        this.collectionSize = res.headers.get('x-pagination-total');
+        this.users = res.body;
+      });
   }
 
-  //This is needed to refresh the paged list of Users
+  //This action navigates to specific user profile page.
+  navigateToUser(userId: number) {
+    this.router.navigate(['/', 'profile'], { queryParams: { id: userId } });
+  }
+
+  //This is needed to refresh the paged list of Users.
   refreshUserList() {
-    this.usersPaged = this.users.slice(
-      (this.page - 1) * this.pageSize,
-      (this.page - 1) * this.pageSize + this.pageSize
-    );
-  }
-
-  //This is needed to open the modal to update the user.
-  openUpdateModal(user: User) {
-    const modalRef = this.modalService.open(UserRegistrationComponent);
-    modalRef.componentInstance.user = user;
+    this.getUsers(this.page);
   }
 }
