@@ -52,7 +52,7 @@ export class UserRegistrationComponent implements OnInit {
   onSubmit() {
     this.http
       .post(
-        environment.baseUrl + ENDPOINTS.USER_ENDPOINT,
+        environment.baseUrl + ENDPOINTS.USERS_ENDPOINT,
         this.userForm.value,
         {
           headers: { Authorization: 'Bearer ' + environment.token },

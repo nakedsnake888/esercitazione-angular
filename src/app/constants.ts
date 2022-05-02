@@ -1,3 +1,4 @@
 export const ENDPOINTS = {
-  USER_ENDPOINT: 'users',
+  USERS_ENDPOINT: 'users',
+  POSTS_ENPOINT: 'posts',
 };

@@ -28,7 +28,7 @@ export class UserViewComponent implements OnInit {
   //This action is the basic GET to get all Users.
   getUsers(pageNumber: number) {
     this.http
-      .get<any>(environment.baseUrl + ENDPOINTS.USER_ENDPOINT, {
+      .get<any>(environment.baseUrl + ENDPOINTS.USERS_ENDPOINT, {
         headers: { Authorization: 'Bearer ' + environment.token },
         params: { page: pageNumber },
         observe: 'response',

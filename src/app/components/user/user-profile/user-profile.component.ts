@@ -31,9 +31,12 @@ export class UserProfileComponent implements OnInit {
   //This action is the basic GET to get user information.
   getUser(userId: number) {
     this.http
-      .get<User>(environment.baseUrl + ENDPOINTS.USER_ENDPOINT + '/' + userId, {
-        headers: { Authorization: 'Bearer ' + environment.token },
-      })
+      .get<User>(
+        environment.baseUrl + ENDPOINTS.USERS_ENDPOINT + '/' + userId,
+        {
+          headers: { Authorization: 'Bearer ' + environment.token },
+        }
+      )
       .subscribe((user) => {
         this.user = user;
         this.allDataFetched = true;
@@ -42,6 +45,9 @@ export class UserProfileComponent implements OnInit {
 
   //This action is needed to navigate to posts of a specific user.
   navigateToPosts() {
-    this.router.navigate(['/', 'posts'], { queryParams: { id: this.userId } });
+    this.router.navigate(['/', 'posts'], {
+      queryParams: { id: this.userId },
+      state: { name: this.user.name },
+    });
   }
 }

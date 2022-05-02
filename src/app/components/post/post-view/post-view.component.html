@@ -1,17 +1,27 @@
-<table class="table table-borderless">
-  <tbody>
-    <tr *ngFor="let post of posts">
-      <td>
-        <div class="card w-100 mx-auto">
-          <div class="card-body">
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+<div class="container w-75 mx-auto">
+  <h4>{{ name }}'s posts</h4>
+  <table class="table table-borderless" *ngIf="posts.length; else noPosts">
+    <tbody>
+      <tr *ngFor="let post of posts">
+        <td>
+          <div class="card w-100 mx-auto">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text">
+                {{ post.body }}
+              </p>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="d-flex align-items-end justify-content-end">
+    <button routerLink="/people" class="btn btn-secondary">Go back</button>
+  </div>
+</div>
+
+<ng-template #noPosts>
+  <p>This user hasn't posted anything yet.</p>
+</ng-template>
