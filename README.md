@@ -5,13 +5,14 @@ INFO
 node version: 16.13.2
 npm version: 8.1.2
 
-N.B. different node or npm versions may cause a bug when installing angular-cli, so these two are the suggested versions.
+N.B. Tested on Windows. different node or npm versions may cause a bug when installing angular-cli, so these two are the suggested versions.
 
 INSTALL GUIDE
 
 1. cd into project folder (example: cd esercitazione-angular)
-2. execute "npm i" command
-3. execute "ng serve --open" command
+2. execute "npm i -g @angular-cli"
+3. execute "npm i" command
+4. execute "ng serve --open" command
 
 # Esercitazione
 
