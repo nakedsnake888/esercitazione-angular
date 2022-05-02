@@ -11,17 +11,21 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./post-view.component.css'],
 })
 export class PostViewComponent implements OnInit {
-  posts!: any[];
-  userId!: number;
   name!: string;
+  userId!: number;
+
+  //This variable holds user's posts.
+  posts!: any[];
+
   constructor(
     public http: HttpClient,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
+  //Taking id from queryParams to retrieve user posts. Also retrieving name from state (default: user).
   ngOnInit(): void {
-    this.name = history.state.name ? history.state.name : null;
+    this.name = history.state.name ? history.state.name : 'User';
     this.route.queryParams.subscribe((params) => {
       this.userId = params['id'];
       this.getPosts(this.userId);
@@ -37,7 +41,8 @@ export class PostViewComponent implements OnInit {
           '/' +
           userId +
           '/' +
-          ENDPOINTS.POSTS_ENPOINT
+          ENDPOINTS.POSTS_ENPOINT,
+        { headers: { Authorization: 'Bearer ' + environment.token } }
       )
       .subscribe((posts) => (this.posts = posts));
   }

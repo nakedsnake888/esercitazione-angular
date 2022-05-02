@@ -21,6 +21,7 @@ export class UserProfileComponent implements OnInit {
     private router: Router
   ) {}
 
+  //Taking id from queryParams to retrieve user profile info.
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.userId = params['id'];

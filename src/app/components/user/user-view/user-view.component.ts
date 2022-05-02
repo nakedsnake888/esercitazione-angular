@@ -21,6 +21,7 @@ export class UserViewComponent implements OnInit {
   page = 1;
   pageSize = 20;
 
+  //Retrieving the first page of users' list.
   ngOnInit(): void {
     this.getUsers(this.page);
   }
@@ -34,6 +35,7 @@ export class UserViewComponent implements OnInit {
         observe: 'response',
       })
       .subscribe((res: any) => {
+        //Getting full collection size from headers.
         this.collectionSize = res.headers.get('x-pagination-total');
         this.users = res.body;
       });
@@ -44,7 +46,7 @@ export class UserViewComponent implements OnInit {
     this.router.navigate(['/', 'profile'], { queryParams: { id: userId } });
   }
 
-  //This is needed to refresh the paged list of Users.
+  //This is needed to refresh the paged list of users when switching the page.
   refreshUserList() {
     this.getUsers(this.page);
   }

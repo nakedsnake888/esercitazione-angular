@@ -4,7 +4,6 @@ import { User } from 'src/app/classes/user/user';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ENDPOINTS } from 'src/app/constants';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,7 +26,7 @@ export class UserRegistrationComponent implements OnInit {
   user!: User;
   userForm!: FormGroup;
 
-  //Creates a new User Form.
+  //Creates a new User Form and populate various FormControl with Validators.
   ngOnInit(): void {
     this.userForm = new FormGroup({
       name: new FormControl('', [

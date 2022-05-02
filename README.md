@@ -1,5 +1,18 @@
 # ESERCITAZIONE ANGULAR
 
+INFO
+
+node version: 16.13.2
+npm version: 8.1.2
+
+N.B. different node or npm versions may cause a bug when installing angular-cli, so these two are the suggested versions.
+
+INSTALL GUIDE
+
+1. cd into project folder (example: cd esercitazione-angular)
+2. execute "npm i" command
+3. execute "ng serve --open" command
+
 # Esercitazione
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.4.
